@@ -18,3 +18,13 @@ Content-Type: application/json
   "description": "À Gotham City, Arthur Fleck, un comédien en difficulté, sombre dans la folie et devient le Joker.",
   "imageUrl": "https://example.com/joker.jpg"
 }
+
+###Add one film without optional fields
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+  "title": "Joker",
+  "director": "Todd Phillips",
+  "duration": 122
+  }

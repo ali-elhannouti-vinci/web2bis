@@ -59,43 +59,40 @@ router.get("/:id",(_req,res) => {
 
 router.post("/",(_req,res)  => {
   const body : unknown = _req.body;
-  if (!body ||
+  if (
+    !body ||
     typeof body !== "object" ||
     !("title" in body) ||
     !("director" in body) ||
     !("duration" in body) ||
-    !("budget" in body) ||
-    !("description" in body) ||
-    !("imageUrl" in body) ||
     typeof body.title !== "string" ||
     typeof body.director !== "string" ||
     typeof body.duration !== "number" ||
-    (body.budget !== undefined && (typeof body.budget !== "number" || body.budget <= 0)) ||
-    (body.description !== undefined && (typeof body.description !== "string" || !body.description.trim())) ||
-    (body.imageUrl !== undefined && (typeof body.imageUrl !== "string" || !body.imageUrl.trim())) ||
     !body.title.trim() ||
-  !body.director.trim() ||
-body.duration <= 0){
+    !body.director.trim() ||
+    body.duration <= 0 ||
+    ("budget" in body &&
+      (typeof body.budget !== "number" || body.budget <= 0)) ||
+    ("description" in body &&
+      (typeof body.description !== "string" || !body.description.trim())) ||
+    ("imageUrl" in body &&
+      (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
+  ){
       return res.sendStatus(400);
     }
 
-    const {title,director,duration,budget,description,imageUrl} = body as NewFilm;
+    const newFilm = body as NewFilm;
 
     const nextId =
     films.reduce((maxId, drink) => (drink.id > maxId ? drink.id : maxId), 0) +
     1;
 
-    const newFilm:Film = {
+    const addedFilm:Film = {
       id:nextId,
-      title,
-      director,
-      duration,
-      budget,
-      description,
-      imageUrl
+      ...newFilm
     };
 
-  films.push(newFilm);
+  films.push(addedFilm);
 
   return res.json(newFilm);
 });
