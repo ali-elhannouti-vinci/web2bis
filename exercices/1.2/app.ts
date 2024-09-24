@@ -10,13 +10,12 @@ app.use(express.urlencoded({ extended: false }));
 let getCounter:number = 0;
 app.use((_req,_res,next)=> {
     console.log(`Request received: ${_req.method} ${_req.url}`);
-    if (_req.method == "GET") {
-        getCounter+=1;
-        
+    if (_req.method === "GET") {
+        getCounter++;
+        console.log(
+            `GET counter : ${getCounter}`
+        );
     }
-    console.log(
-        `GET counter : ${getCounter}`
-    );
     next();
 });
 
