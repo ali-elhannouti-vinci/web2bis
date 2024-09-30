@@ -101,6 +101,165 @@ router.post("/",(_req,res)  => {
   return res.json(newFilm);
 });
 
+router.delete("/:id",(req,res) => {
+  const id = Number(req.params.id);
+  const foundFilmIndex = films.findIndex((film) => film.id === id);
+  if (foundFilmIndex === -1) {
+    return res.sendStatus(404)
+  }
+  const deletedElements = films.splice(foundFilmIndex,1);
+  return res.json(deletedElements[0]);
+});
 
+router.patch("/:id",(req,res) => {
+  const id = Number(req.params.id);  
+  const foundFilm = films.find((film) => film.id === id);  
+  if (!foundFilm) {
+    return res.sendStatus(404)
+  }
+
+  const body:unknown = req.body;  
+
+  if (
+    !body ||
+    typeof body !== "object" ||
+    ("title" in body && 
+      (typeof body.title !== "string" || !body.title.trim())) ||
+    ("director" in body && 
+      (typeof body.director !== "string" || !body.director.trim())) ||
+    ("duration" in body && 
+      (typeof body.duration !== "number" || body.duration <= 0)) ||
+    ("budget" in body &&
+      (typeof body.budget !== "number" || body.budget <= 0)) ||
+    ("description" in body && 
+      (typeof body.description !== "string" || !body.description.trim())) ||
+    ("imageUrl" in body && 
+      (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
+  ) {
+    return res.sendStatus(400);
+  }
+
+  if (("title" in body && "director" in body) && films.find((film) => film.title === body.title && film.director === body.director)) {
+    return res.sendStatus(409);
+  }
+
+  const {title,director,duration,budget,description,imageUrl}:Partial<NewFilm> = body;
+
+  if (title) {
+    foundFilm.title = title;
+  }
+  if (director) {
+    foundFilm.director = director;
+  }
+  if (duration) {
+    foundFilm.duration = duration;
+  }
+  if (budget) {
+    foundFilm.budget = budget;
+  }
+  if (description) {
+    foundFilm.description = description;
+  }
+  if (imageUrl) {
+    foundFilm.imageUrl = imageUrl;
+  }
+
+  return res.json(foundFilm);
+  
+});
+
+router.put("/:id",(req,res) => {
+  const id = Number(req.params.id);
+  const foundFilm = films.find((film) => film.id === id);
+
+  const body:unknown = req.body;
+
+  if (!foundFilm) {
+    if (
+      !body ||
+      typeof body !== "object" ||
+      !("title" in body) ||
+      !("director" in body) ||
+      !("duration" in body) ||
+      typeof body.title !== "string" ||
+      typeof body.director !== "string" ||
+      typeof body.duration !== "number" ||
+      !body.title.trim() ||
+      !body.director.trim() ||
+      body.duration <= 0 ||
+      ("budget" in body &&
+        (typeof body.budget !== "number" || body.budget <= 0)) ||
+      ("description" in body &&
+        (typeof body.description !== "string" || !body.description.trim())) ||
+      ("imageUrl" in body &&
+        (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
+    ){
+        return res.sendStatus(400);
+      }
+  
+      if (films.find((film) => film.title === body.title && film.director === body.director)) {
+        return res.sendStatus(409);
+      }
+  
+      const newFilm = body as NewFilm;
+  
+      const nextId =
+      films.reduce((maxId, drink) => (drink.id > maxId ? drink.id : maxId), 0) +
+      1;
+  
+      const addedFilm:Film = {
+        id:nextId,
+        ...newFilm
+      };
+  
+    films.push(addedFilm);
+    return res.json(newFilm);
+  }
+  if (
+    !body ||
+    typeof body !== "object" ||
+    ("title" in body && 
+      (typeof body.title !== "string" || !body.title.trim())) ||
+    ("director" in body && 
+      (typeof body.director !== "string" || !body.director.trim())) ||
+    ("duration" in body && 
+      (typeof body.duration !== "number" || body.duration <= 0)) ||
+    ("budget" in body &&
+      (typeof body.budget !== "number" || body.budget <= 0)) ||
+    ("description" in body && 
+      (typeof body.description !== "string" || !body.description.trim())) ||
+    ("imageUrl" in body && 
+      (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
+  ) {
+    return res.sendStatus(400);
+  }
+
+  if (("title" in body && "director" in body) && films.find((film) => film.title === body.title && film.director === body.director)) {
+    return res.sendStatus(409);
+  }
+
+  const {title,director,duration,budget,description,imageUrl}:Partial<NewFilm> = body;
+
+  if (title) {
+    foundFilm.title = title;
+  }
+  if (director) {
+    foundFilm.director = director;
+  }
+  if (duration) {
+    foundFilm.duration = duration;
+  }
+  if (budget) {
+    foundFilm.budget = budget;
+  }
+  if (description) {
+    foundFilm.description = description;
+  }
+  if (imageUrl) {
+    foundFilm.imageUrl = imageUrl;
+  }
+
+  return res.json(foundFilm);
+});
 
 export default router;
