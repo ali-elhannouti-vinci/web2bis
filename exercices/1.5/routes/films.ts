@@ -81,7 +81,7 @@ router.post("/",(_req,res)  => {
       return res.sendStatus(400);
     }
 
-    if (films.find((film) => film.title === body.title)) {
+    if (films.find((film) => film.title === body.title && film.director === body.director)) {
       return res.sendStatus(409);
     }
 
