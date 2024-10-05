@@ -4,7 +4,7 @@
  * @returns
  */
 
-import { NewPizza } from "../types";
+// import { NewPizza } from "../types";
 
 /**
  * Check if the value is a string and inform typescript of this
@@ -25,21 +25,21 @@ const isNumber = (value: unknown): value is number => {
  * @param body
  * @returns boolean
  */
-const isNewPizza = (body: unknown): body is NewPizza => {
-  if (
-    !body ||
-    typeof body !== "object" ||
-    !("title" in body) ||
-    !("content" in body) ||
-    body.title !== "string" ||
-    body.content !== "string" ||
-    !body.title.trim() ||
-    !body.content.trim()
-  ) {
-    return false;
-  }
+// const isNewPizza = (body: unknown): body is NewPizza => {
+//   if (
+//     !body ||
+//     typeof body !== "object" ||
+//     !("title" in body) ||
+//     !("content" in body) ||
+//     body.title !== "string" ||
+//     body.content !== "string" ||
+//     !body.title.trim() ||
+//     !body.content.trim()
+//   ) {
+//     return false;
+//   }
 
-  return true;
-};
+//   return true;
+// };
 
-export { isString, isNumber, isNewPizza };
+export { isString, isNumber };
