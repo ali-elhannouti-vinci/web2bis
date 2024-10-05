@@ -1,0 +1,42 @@
+@baseUrl = http://localhost:3000
+###Read All films
+GET {{baseUrl}}/films/
+###Read All films by min duration
+GET {{baseUrl}}/films?minimum-duration=160
+###Read One film
+GET {{baseUrl}}/films/2
+
+###Add one film
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+  "title": "Joker",
+  "director": "Todd Phillips",
+  "duration": 122,
+  "budget": 55000000,
+  "description": "À Gotham City, Arthur Fleck, un comédien en difficulté, sombre dans la folie et devient le Joker.",
+  "imageUrl": "https://example.com/joker.jpg"
+}
+
+###Add one film without optional fields
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+  "title": "Joker",
+  "director": "Todd Phillips",
+  "duration": 122
+  }
+
+###Delete one film
+DELETE {{baseUrl}}/films/1
+Content-Type: application/json
+
+###Update a film
+PATCH {{baseUrl}}/films/2
+Content-Type: application/json
+
+{
+  "title" : "Oppenheimer updated"
+}
