@@ -52,7 +52,7 @@ Content-Type: application/json
 }
 
 ###Put a new film by putting a non existing id
-PUT {{baseUrl}}/films/5
+PUT {{baseUrl}}/films/7
 Content-Type: application/json
 
 {

@@ -121,18 +121,22 @@ function updateOneFilmById(id:number,updatedFilm:Partial<NewFilm>) : Film {
   return foundFilm;
 }
 
-function addOrUpdateIfExists(id:number,body:NewFilm | Partial<NewFilm>) : Film {
+function addOrUpdateIfExists(id:number,body:NewFilm) : Film | undefined {
   const films = parse(jsonDbPath, defaultFilms);
 
   const indexOfFilmToUpdate = films.findIndex((film) => film.id === id);
   // Deal with the film creation if it does not exist
   if (indexOfFilmToUpdate < 0) {
-    const newFilm = body as NewFilm;
+    const newFilm = body;
+
+    if (films.find((film) => film.title === newFilm.title && film.director === newFilm.director)) {
+      return undefined;
+    }
 
     const nextId =
       films.reduce((acc, film) => (film.id > acc ? film.id : acc), 0) + 1;
 
-    const addedFilm = { id: nextId, ...newFilm };
+    const addedFilm = { id: nextId, ...newFilm } as Film;
 
     films.push(addedFilm);
 

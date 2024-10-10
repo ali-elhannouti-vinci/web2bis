@@ -136,7 +136,10 @@ router.put("/:id", (req, res) => {
     return res.sendStatus(400);
   }
 
-  const newOrUpdatedFilm = addOrUpdateIfExists(id,body as Partial<NewFilm>);
+  const newOrUpdatedFilm = addOrUpdateIfExists(id,body as NewFilm);
+  if (!newOrUpdatedFilm) {
+    return res.sendStatus(409);
+  }
 
   return res.json(newOrUpdatedFilm);
 });
