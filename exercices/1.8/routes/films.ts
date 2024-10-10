@@ -95,7 +95,7 @@ router.patch("/:id",(req,res) => {
 
   let foundFilm:Film|undefined = undefined;
   try {
-    foundFilm = updateOneFilmById(id,{title,director,duration,budget,description,imageUrl})
+    foundFilm = updateOneFilmById(id,{title,director,duration,budget,description,imageUrl});
   } catch (error) {
     return res.sendStatus(Number(error));
   }
