@@ -42,9 +42,21 @@ Content-Type: application/json
 }
 
 ###Put an already existing film
+PUT {{baseUrl}}/films/3
+Content-Type: application/json
+
+{
+  "title": "Django updated by PUT ",
+  "director": "Updated by PUT",
+  "duration": 110
+}
+
+###Put a new film by putting a non existing id
 PUT {{baseUrl}}/films/5
 Content-Type: application/json
 
 {
-  "title" : "Django modified by PUT"
+  "title": "New Film by PUT",
+  "director": "PUT",
+  "duration": 500
 }
