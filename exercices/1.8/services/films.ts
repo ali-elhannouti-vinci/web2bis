@@ -121,11 +121,42 @@ function updateOneFilmById(id:number,updatedFilm:Partial<NewFilm>) : Film {
   return foundFilm;
 }
 
+function addOrUpdateIfExists(id:number,body:NewFilm | Partial<NewFilm>) : Film {
+  const films = parse(jsonDbPath, defaultFilms);
+
+  const indexOfFilmToUpdate = films.findIndex((film) => film.id === id);
+  // Deal with the film creation if it does not exist
+  if (indexOfFilmToUpdate < 0) {
+    const newFilm = body as NewFilm;
+
+    const nextId =
+      films.reduce((acc, film) => (film.id > acc ? film.id : acc), 0) + 1;
+
+    const addedFilm = { id: nextId, ...newFilm };
+
+    films.push(addedFilm);
+
+    serialize(jsonDbPath, films);
+
+    return addedFilm;
+  }
+
+  // Update the film
+  const updatedFilm = { ...films[indexOfFilmToUpdate], ...body } as Film;
+
+  films[indexOfFilmToUpdate] = updatedFilm;
+
+  serialize(jsonDbPath, films);
+
+  return updatedFilm;
+}
+
 export {
   readAllFilms,
   readOneFilmById,
   addOneFilm,
   deleteOneFilm,
-  updateOneFilmById
+  updateOneFilmById,
+  addOrUpdateIfExists
 };
 

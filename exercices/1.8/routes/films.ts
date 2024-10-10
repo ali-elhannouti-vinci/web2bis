@@ -1,10 +1,10 @@
 import { Router } from "express";
 import { Film, NewFilm } from "../types";
-import { addOneFilm, deleteOneFilm, readAllFilms, readOneFilmById, updateOneFilmById } from "../services/films";
+import { addOneFilm, addOrUpdateIfExists, deleteOneFilm, readAllFilms, readOneFilmById, updateOneFilmById } from "../services/films";
 
 const router = Router();
 
-router.get("/error", (_req, _res, _next) => {
+router.get("/error", () => {
   throw new Error("This is an error");
   // equivalent of next(new Error("This is an error"));
 });
@@ -23,8 +23,8 @@ router.get("/:id",(req,res) => {
   return res.json(foundFilm);
 });
 
-router.post("/",(_req,res)  => {
-  const body : unknown = _req.body;
+router.post("/",(req,res)  => {
+  const body : unknown = req.body;
   if (
     !body ||
     typeof body !== "object" ||
@@ -104,13 +104,10 @@ router.patch("/:id",(req,res) => {
   
 });
 
-router.put("/:id",(req,res) => {
-  const id = Number(req.params.id);
-  const films = parse(jsonDbPath,defaultFilms);
-  const foundFilm = films.find((film) => film.id === id);
-  const body:unknown = req.body;
+// Update a film only if all properties are given or create it if it does not exist and the id is not existent
+router.put("/:id", (req, res) => {
+  const body: unknown = req.body;
 
-  if (!foundFilm) {
   if (
     !body ||
     typeof body !== "object" ||
@@ -129,66 +126,19 @@ router.put("/:id",(req,res) => {
       (typeof body.description !== "string" || !body.description.trim())) ||
     ("imageUrl" in body &&
       (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
-  ){
-      return res.sendStatus(400);
-    }
-
-    const newFilm = body as NewFilm;
-
-    const addedFilm:Film|undefined = addOneFilm(newFilm);
-
-    if (!addedFilm) {
-      return res.json(409);
-    }
-
-  return res.json(addOneFilm);
-  }
-  if (
-    !body ||
-    typeof body !== "object" ||
-    ("title" in body && 
-      (typeof body.title !== "string" || !body.title.trim())) ||
-    ("director" in body && 
-      (typeof body.director !== "string" || !body.director.trim())) ||
-    ("duration" in body && 
-      (typeof body.duration !== "number" || body.duration <= 0)) ||
-    ("budget" in body &&
-      (typeof body.budget !== "number" || body.budget <= 0)) ||
-    ("description" in body && 
-      (typeof body.description !== "string" || !body.description.trim())) ||
-    ("imageUrl" in body && 
-      (typeof body.imageUrl !== "string" || !body.imageUrl.trim()))
   ) {
     return res.sendStatus(400);
   }
 
-  if (("title" in body && "director" in body) && films.find((film) => film.title === body.title && film.director === body.director)) {
-    return res.sendStatus(409);
+  const id = Number(req.params.id);
+
+  if (isNaN(id)) {
+    return res.sendStatus(400);
   }
 
-  const {title,director,duration,budget,description,imageUrl}:Partial<NewFilm> = body;
+  const newOrUpdatedFilm = addOrUpdateIfExists(id,body as Partial<NewFilm>);
 
-  if (title) {
-    foundFilm.title = title;
-  }
-  if (director) {
-    foundFilm.director = director;
-  }
-  if (duration) {
-    foundFilm.duration = duration;
-  }
-  if (budget) {
-    foundFilm.budget = budget;
-  }
-  if (description) {
-    foundFilm.description = description;
-  }
-  if (imageUrl) {
-    foundFilm.imageUrl = imageUrl;
-  }
-
-  serialize(jsonDbPath,films);
-  return res.json(foundFilm);
+  return res.json(newOrUpdatedFilm);
 });
 
 
