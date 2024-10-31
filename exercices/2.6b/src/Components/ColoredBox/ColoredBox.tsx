@@ -1,26 +1,23 @@
 import { useState } from "react";
 
 function ColoredBox() {
-  const [bgColor, setBgColor] = useState("red");
   const [clickCounter, setClickCounter] = useState(0);
 
-  const colors = ["green", "blue", "yellow", "purple","red"];
+  const colors = ["red","green", "blue", "yellow", "purple"];
 
   function clickHandler() {
-    setBgColor(colors[clickCounter]);
     if (clickCounter === colors.length-1) {
       setClickCounter(0);
     } else {
       setClickCounter(clickCounter + 1);
     }
     console.log(clickCounter);
-    
   }
 
   return (
-    <div className="box" style={{ backgroundColor: bgColor }}>
-        <div style={{color: "black"}}>{bgColor}</div>
-      <button onClick={clickHandler}>{colors[clickCounter]}</button>
+    <div className="box" style={{ backgroundColor: colors[clickCounter] }}>
+      <button onClick={clickHandler}>{clickCounter === colors.length-1 ? colors[0] : colors[clickCounter+1]}</button>
+      <div style={{color: "black"}}>{colors[clickCounter]}</div>
     </div>
   );
 }
