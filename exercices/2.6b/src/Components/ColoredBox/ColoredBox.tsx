@@ -6,17 +6,13 @@ function ColoredBox() {
   const colors = ["red","green", "blue", "yellow", "purple"];
 
   function clickHandler() {
-    if (clickCounter === colors.length-1) {
-      setClickCounter(0);
-    } else {
-      setClickCounter(clickCounter + 1);
-    }
+    setClickCounter((clickCounter+1)%colors.length)
     console.log(clickCounter);
   }
 
   return (
     <div className="box" style={{ backgroundColor: colors[clickCounter] }}>
-      <button onClick={clickHandler}>{clickCounter === colors.length-1 ? colors[0] : colors[clickCounter+1]}</button>
+      <button onClick={clickHandler}>{colors[(clickCounter+1)%colors.length]}</button>
       <div style={{color: "black"}}>{colors[clickCounter]}</div>
     </div>
   );
