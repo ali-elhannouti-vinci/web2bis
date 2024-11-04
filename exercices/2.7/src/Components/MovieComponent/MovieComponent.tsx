@@ -1,7 +1,7 @@
-function MovieComponent({titre, director, duration, imageUrl, description, budget}: MovieProps) {
+function MovieComponent({title: title, director, duration, imageUrl, description, budget}: MovieProps) {
     return (
         <ul>
-            <li><strong>Title:</strong> {titre}</li>
+            <li><strong>Title:</strong> {title}</li>
             <li><strong>Director:</strong> {director}</li>
             <li><strong>Duration:</strong> {duration} minutes</li>
             {imageUrl && <li><img src={imageUrl}></img></li>}
@@ -12,7 +12,7 @@ function MovieComponent({titre, director, duration, imageUrl, description, budge
 }
 
 interface MovieProps {
-    titre:string,
+    title:string,
     director:string,
     duration:number,
     imageUrl?:string,

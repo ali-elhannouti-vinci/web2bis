@@ -1,5 +1,5 @@
 interface Movie {
-    titre:string,
+    title:string,
     director:string,
     duration:number,
     imageUrl?:string,
