@@ -1,7 +1,7 @@
 import PageTitle from "../PageTitle/PageTitle";
 
 function HomePage() {
-    (
+    return (
         <div>
             <PageTitle title="iMovies"/>
             <h2>

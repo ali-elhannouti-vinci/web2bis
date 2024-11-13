@@ -1,20 +1,10 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import NavBar from '../NavBar/NavBar';
 import MovieListPage from "../MovieListPage/MovieListPage";
 import CinemaPage from "../CinemaPage/CinemaPage";
+import HomePage from "../HomePage/HomePage";
 
-const NavBar = () => {
-  const navigate = useNavigate();
-
-  return (
-    <nav>
-      <button onClick={() => navigate("/")}>Home</button>
-      <button onClick={() => navigate("/cinemapage")}>Cinema page</button>
-      <button onClick={() => navigate("/movielist")}> Movie list</button>
-    </nav>
-  );
-};
-
-const HomePage = () => <HomePage />;
+const HomePageRender = () => <HomePage />;
 const MovieListPageRender = () => <MovieListPage />;
 const CinemaPageRender = () => <CinemaPage />;
 
@@ -25,5 +15,4 @@ const App = () => (
   </div>
 );
 
-export default App;
-export { HomePage, MovieListPageRender, CinemaPageRender };
+export { App,HomePageRender, MovieListPageRender, CinemaPageRender };
