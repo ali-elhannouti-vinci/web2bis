@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "../2.6/src/components/Movie", "../2.6/src/components/PageTitle", "../2.6/src/components/Cinema", "../2.6/src/components/App/App.tsx"]
 }
