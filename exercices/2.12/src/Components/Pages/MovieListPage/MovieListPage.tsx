@@ -15,8 +15,6 @@ function MovieListPage() {
       <ul>
         {movies.map((movie) => (
           <li key={movie.id}>
-            {" "}
-            {/* Use a unique key for list items */}
             <MovieComponent
               title={movie.title}
               director={movie.director}

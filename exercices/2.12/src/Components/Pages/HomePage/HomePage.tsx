@@ -1,5 +1,5 @@
 import { MovieListContext } from "../../../types";
-import MovieOnHomePage from "../../MovieOnlyTitle/MovieOnHomePage";
+import MovieOnHomePage from "../../MovieOnHomePage/MovieOnHomePage";
 import PageTitle from "../../PageTitle/PageTitle";
 import { useOutletContext } from "react-router-dom";
 
@@ -15,10 +15,10 @@ function HomePage() {
       </h2>
       <ul>
         {movies.map((movie) => (
-          <li key={movie.id}>
-            <MovieOnHomePage id={movie.id} title={movie.title} />
-            <br />
-          </li>
+            <li key={movie.id}>
+                <MovieOnHomePage id={movie.id} title={movie.title} />
+            </li>
+            
         ))}
       </ul>
     </div>
