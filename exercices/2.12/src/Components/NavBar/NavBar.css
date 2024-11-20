@@ -10,11 +10,7 @@ nav {
     z-index: 1000; /* Assurez-vous que le nav est au-dessus de tout autre contenu */
     display: flex;
   }
-  
-  /* Espace ajouté sous le nav fixe pour que le contenu ne soit pas caché */
-  body {
-    margin-top: 60px; /* Ajustez cette valeur à la hauteur de votre navbar */
-  }
+
   
   /* Exemple de style responsive pour petites tailles d'écran */
   @media (max-width: 768px) {

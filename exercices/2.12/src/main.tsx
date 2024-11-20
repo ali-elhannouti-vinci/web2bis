@@ -1,9 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {App,HomePageRender,CinemaPageRender,MovieListPageRender} from "./Components/App/App";
+import App from "./Components/App/App";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import AddMoviePageRender from "./Components/Pages/AddMoviePage/AddMoviePage";
+import AddMoviePage from "./Components/Pages/AddMoviePage/AddMoviePage";
+import MovieListPage from "./Components/Pages/MovieListPage/MovieListPage";
+import CinemaPage from "./Components/Pages/CinemaPage/CinemaPage";
+import HomePage from "./Components/Pages/HomePage/HomePage";
+import MoviePage from "./Components/Pages/MoviePage/MoviePage";
 
 const router = createBrowserRouter([
   {
@@ -12,19 +16,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element:<HomePageRender />,
+        element:<HomePage />,
       },
       {
         path: "cinemapage",
-        element: <CinemaPageRender />,
+        element: <CinemaPage />,
       },
       {
         path: "movielist",
-        element: <MovieListPageRender />,
+        element: <MovieListPage />,
       },
       {
         path: "addmoviepage",
-        element: <AddMoviePageRender />
+        element: <AddMoviePage />
+      },
+      {
+        path: "moviepage/:movieId",
+        element:<MoviePage />
       }
     ],
   },

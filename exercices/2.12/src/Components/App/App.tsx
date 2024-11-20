@@ -1,11 +1,7 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
-import MovieListPage from "../Pages/MovieListPage/MovieListPage";
-import CinemaPage from "../Pages/CinemaPage/CinemaPage";
-import HomePage from "../Pages/HomePage/HomePage";
 import { Movie, MovieListContext, NewMovie } from "../../types";
 import { useState } from "react";
-import AddMoviePage from "../Pages/AddMoviePage/AddMoviePage";
 
 const defaultMovies: Movie[] = [
   {
@@ -76,11 +72,6 @@ const defaultMovies: Movie[] = [
   },
 ];
 
-const HomePageRender = () => <HomePage />;
-const MovieListPageRender = () => <MovieListPage />;
-const CinemaPageRender = () => <CinemaPage />;
-const AddMoviePageRender = () => <AddMoviePage />;
-
 const App = () => {
   const [movies, setMovies] = useState(defaultMovies);
   // Fonction pour obtenir un nouvel ID basé sur le dernier film
@@ -115,10 +106,5 @@ const App = () => {
   );
 };
 
-export {
-  App,
-  HomePageRender,
-  MovieListPageRender,
-  CinemaPageRender,
-  AddMoviePageRender,
-};
+export default
+  App;
