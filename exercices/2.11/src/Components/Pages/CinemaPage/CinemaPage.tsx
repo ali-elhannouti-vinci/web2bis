@@ -1,7 +1,7 @@
-import Cinema from "../Cinema/Cinema";
-import PageTitle from '../PageTitle/PageTitle';
-import CinemaHeader from '../CinemaHeader/CinemaHeader';
-import CinemaFooter from '../CinemaFooter/CinemaFooter';
+import Cinema from "../../Cinema/Cinema";
+import PageTitle from '../../PageTitle/PageTitle';
+import CinemaHeader from '../../CinemaHeader/CinemaHeader';
+import CinemaFooter from '../../CinemaFooter/CinemaFooter';
 
 const CinemaPage = () => {
   const pageTitle = "Informations sur les films dans les cinémas";

@@ -1,5 +1,5 @@
-import MovieComponent from "../MovieComponent/MovieComponent";
-import { Movie } from "../../types";
+import MovieComponent from "../../MovieComponent/MovieComponent";
+import { Movie } from "../../../types";
 import { SyntheticEvent, useState } from "react";
 
 const defaultMovies: Movie[] = [

@@ -1,8 +1,8 @@
 import { Outlet } from "react-router-dom";
 import NavBar from '../NavBar/NavBar';
-import MovieListPage from "../MovieListPage/MovieListPage";
-import CinemaPage from "../CinemaPage/CinemaPage";
-import HomePage from "../HomePage/HomePage";
+import MovieListPage from "../Pages/MovieListPage/MovieListPage";
+import CinemaPage from "../Pages/CinemaPage/CinemaPage";
+import HomePage from "../Pages/HomePage/HomePage";
 
 const HomePageRender = () => <HomePage />;
 const MovieListPageRender = () => <MovieListPage />;
