@@ -8,6 +8,7 @@ const NavBar = () => {
       <button onClick={() => navigate("/")}>Home</button>
       <button onClick={() => navigate("/cinemapage")}>Cinema page</button>
       <button onClick={() => navigate("/movielist")}> Movie list</button>
+      <button onClick={() => navigate("/addmoviepage")}> Add Movie Page</button>
     </nav>
   );
 };
