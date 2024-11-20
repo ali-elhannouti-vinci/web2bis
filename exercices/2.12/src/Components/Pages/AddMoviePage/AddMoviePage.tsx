@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState } from "react";
-import { Movie, MovieListContext } from "../../../types";
+import { MovieListContext, NewMovie } from "../../../types";
 import {  useNavigate, useOutletContext } from "react-router-dom";
 
 function AddMoviePage() {
@@ -69,7 +69,7 @@ function AddMoviePage() {
     // Clear error message if validation passes
     setError("");
 
-    const newMovie: Movie = {
+    const newMovie: NewMovie = {
       title: titre,
       director: director,
       duration: duration,

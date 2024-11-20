@@ -7,6 +7,7 @@ function HomePage() {
             <h2>
                 Welcome to iMovies, your ultimate destination for discovering the latest movies and cinemas near you. Explore showtimes, read reviews, and find the perfect movie experience.
             </h2>
+            
 
         </div>
     )
