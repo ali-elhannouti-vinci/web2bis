@@ -7,9 +7,9 @@ function AddMoviePage() {
   const [titre, setTitle] = useState("");
   const [director, setDirector] = useState("");
   const [duration, setDuration] = useState(0);
-  const [imageUrl, setImageUrl] = useState("");
-  const [description, setDescription] = useState("");
-  const [budget, setBudget] = useState(0);
+  const [imageUrl, setImageUrl] = useState<undefined | string>(undefined);
+  const [description, setDescription] = useState<undefined | string>(undefined);
+  const [budget, setBudget] = useState<undefined | number>(undefined);
 
   const [error, setError] = useState(""); // State for error messages
 
@@ -83,9 +83,9 @@ function AddMoviePage() {
     setTitle("");
     setDirector("");
     setDuration(0);
-    setImageUrl("");
-    setDescription("");
-    setBudget(0);
+    setImageUrl(undefined);
+    setDescription(undefined);
+    setBudget(undefined);
     navigate("/movielist");
   }
 
