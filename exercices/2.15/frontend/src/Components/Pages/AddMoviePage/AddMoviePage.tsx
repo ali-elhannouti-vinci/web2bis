@@ -14,7 +14,7 @@ function AddMoviePage() {
   const [error, setError] = useState(""); // State for error messages
 
   const {
-    addMovie
+    addMovie,
   } : MovieListContext =  useOutletContext();
  
 

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import { Movie, MovieListContext, NewMovie } from "../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const defaultMovies: Movie[] = [
   {
@@ -74,29 +74,66 @@ const defaultMovies: Movie[] = [
 
 const App = () => {
   const [movies, setMovies] = useState(defaultMovies);
-  // Fonction pour obtenir un nouvel ID basé sur le dernier film
-  const getNextId = (movies: Movie[]): number => {
-    // Si la liste est vide, retourner 1 comme premier ID
-    if (movies.length === 0) return 1;
 
-    // Sinon, prendre l'ID du dernier film et l'incrémenter
-    const lastMovie = movies[movies.length - 1];
-    return lastMovie.id + 1;
-  };
-  
-  const addMovie = (newMovie: NewMovie) => {
-    const nextId = getNextId(movies)
-    const addedMovie : Movie = {
-      id:nextId,...newMovie
+  async function getAllMovies() {
+    try {
+      const response = await fetch("/api/films");
+
+      if (!response.ok) {
+        throw new Error(response.statusText+" "+response.status);
+      }
+
+      const films = await response.json();
+      return films;
+    } catch (error) {
+      console.error("Error getAllMovies : "+error)
+      throw error;
     }
-    setMovies([...movies, addedMovie]);
-  };
+  }
+
+  async function addMovie(newMovie : NewMovie) {
+    try {
+      console.log("New movie : "+ newMovie);
+      
+      const options = {
+        method:"POST",
+        body: JSON.stringify(newMovie),
+        headers:{
+          "Content-type" : "application/json"
+        }
+      }
+
+      const serverResponse = await fetch("/api/films",options)
+      if (!serverResponse.ok) {
+        throw new Error(serverResponse.statusText+" "+serverResponse.status);
+      }
+      fetchMovies();
+    } catch (error) {
+      console.error("Error PostMovie : "+error)
+      throw error;
+    }
+  }
 
   const fullMovieListContext: MovieListContext = {
     movies,
     setMovies,
     addMovie,
   };
+
+useEffect(() => {
+  fetchMovies();
+},[] )
+
+const fetchMovies = async () => {
+  try {
+  const fetchedMovies = await getAllMovies();
+  setMovies(fetchedMovies);
+  console.log("fetched movies : "+fetchedMovies);
+  
+  } catch (error) {
+    console.error("fetchMovies::error: "+error)
+  }
+};
 
   return (
     <div>
