@@ -1,0 +1,8 @@
+.movieComponent{
+    border: 0.3em solid grey; 
+    margin: 0.3em;
+}
+
+.movieFirstLine:hover{
+    color: lightblue;
+}

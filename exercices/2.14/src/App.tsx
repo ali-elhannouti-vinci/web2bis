@@ -29,7 +29,7 @@ function App() {
 
   useEffect(() => {
     fetchJoke();
-    const intervalJokeChange = setInterval((fetchJoke),10000)
+    const intervalJokeChange = setInterval(fetchJoke,10000)
     return () => clearInterval(intervalJokeChange);
   },[])
 
