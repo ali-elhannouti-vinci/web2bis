@@ -1,0 +1,235 @@
+@baseUrl = http://localhost:3000
+
+### Login the default admin
+# @name admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"admin",
+    "password":"admin"
+}
+
+##### 2.1.2 Define a file variable to simplify the access to the token of manager
+@adminToken = {{admin.response.body.token}}
+
+###Read All films
+GET {{baseUrl}}/films/
+###Read All films by min duration
+GET {{baseUrl}}/films?minimum-duration=160
+###Read One film
+GET {{baseUrl}}/films/2
+
+###Create one film
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "title": "Joker",
+  "director": "Todd Phillips",
+  "duration": 122,
+  "budget": 55000000,
+  "description": "À Gotham City, Arthur Fleck, un comédien en difficulté, sombre dans la folie et devient le Joker.",
+  "imageUrl": "https://www.francescocaruso.net/wp-content/uploads/2019/10/joker-img.jpg"
+}
+
+###Create one film without optional fields
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "title": "Joker without optional fields",
+  "director": "Todd Phillips",
+  "duration": 122
+  }
+
+###Delete one film
+DELETE {{baseUrl}}/films/4
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+###Update a film
+PATCH {{baseUrl}}/films/2
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "title" : "Oppenheimer updated"
+}
+
+###Update a film by putting an already existing id
+PUT {{baseUrl}}/films/3
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "title": "Django updated by PUT ",
+  "director": "Updated by PUT",
+  "duration": 110
+}
+
+###Create a new film by putting a non existing id
+PUT {{baseUrl}}/films/7
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+  "title": "New Film by PUT",
+  "director": "PUT",
+  "duration": 500
+}
+
+### Read All films (Non authentifié)
+GET {{baseUrl}}/films/
+
+### Read All films by min duration (Non authentifié)
+GET {{baseUrl}}/films?minimum-duration=160
+
+### Read One film (Non authentifié)
+GET {{baseUrl}}/films/2
+
+### Create one film (Non authentifié)
+POST {{baseUrl}}/films/
+Content-Type: application/json
+
+{
+  "title": "Unauthorized Film Creation",
+  "director": "Unknown",
+  "duration": 120,
+  "budget": 30000000,
+  "description": "Tentative de création sans authentification",
+  "imageUrl": "https://example.com/unauthorized.jpg"
+}
+
+### Delete one film (Non authentifié)
+DELETE {{baseUrl}}/films/4
+Content-Type: application/json
+
+### Update a film (Non authentifié)
+PATCH {{baseUrl}}/films/2
+Content-Type: application/json
+
+{
+  "title" : "Unauthorized Update"
+}
+
+### Update a film by putting an already existing id (Non authentifié)
+PUT {{baseUrl}}/films/3
+Content-Type: application/json
+
+{
+  "title": "Unauthorized PUT Update",
+  "director": "Not Allowed",
+  "duration": 110
+}
+
+### Create a new film by putting a non-existing id (Non authentifié)
+PUT {{baseUrl}}/films/7
+Content-Type: application/json
+
+{
+  "title": "Unauthorized PUT Creation",
+  "director": "PUT",
+  "duration": 500
+}
+
+### Create the manager user
+POST {{baseUrl}}/auths/register
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+
+### Login the manager user
+# @name manager
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username":"manager",
+    "password":"manager"
+}
+
+##### 2.1.2 Define a file variable to simplify the access to the token of manager
+@managerToken = {{manager.response.body.token}}
+
+@baseUrl = http://localhost:3000
+
+### Read All films (Connecté en tant que manager)
+GET {{baseUrl}}/films/
+Authorization: {{managerToken}}
+
+### Read All films by min duration (Connecté en tant que manager)
+GET {{baseUrl}}/films?minimum-duration=160
+Authorization: {{managerToken}}
+
+### Read One film (Connecté en tant que manager)
+GET {{baseUrl}}/films/2
+Authorization: {{managerToken}}
+
+### Create one film (Connecté en tant que manager)
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+{
+  "title": "Film Created by Manager",
+  "director": "Manager User",
+  "duration": 120,
+  "budget": 30000000,
+  "description": "Film créé par un manager sans restriction d'accès",
+  "imageUrl": "https://example.com/manager-created-film.jpg"
+}
+
+### Create one film without optional fields (Connecté en tant que manager)
+POST {{baseUrl}}/films/
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+{
+  "title": "Manager Film Without Optional Fields",
+  "director": "Manager Director",
+  "duration": 90
+}
+
+### Delete one film (Connecté en tant que manager)
+DELETE {{baseUrl}}/films/4
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+### Update a film (Connecté en tant que manager)
+PATCH {{baseUrl}}/films/2
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+{
+  "title" : "Film Updated by Manager"
+}
+
+### Update a film by putting an already existing id (Connecté en tant que manager)
+PUT {{baseUrl}}/films/3
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+{
+  "title": "Manager PUT Update",
+  "director": "Updated by Manager",
+  "duration": 140
+}
+
+### Create a new film by putting a non-existing id (Connecté en tant que manager)
+PUT {{baseUrl}}/films/7
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+{
+  "title": "New Film by Manager (PUT)",
+  "director": "PUT Created by Manager",
+  "duration": 180
+}
+
+
