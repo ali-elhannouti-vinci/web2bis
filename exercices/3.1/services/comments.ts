@@ -1,7 +1,8 @@
 import path from "node:path";
 import { parse, serialize } from "../utils/json";
-import { Comment, NewComment } from "../types";
-const jsonDbPath = path.join(__dirname, "/../data/comments.json");
+import { Comment, Film, NewComment } from "../types";
+const jsonDbPathComments = path.join(__dirname, "/../data/comments.json");
+const jsonDbPathFilms = path.join(__dirname, "/../data/films.json");
 
 const defaultComments: Comment[] = [
   {
@@ -23,10 +24,28 @@ const defaultComments: Comment[] = [
     comment:
       "Des performances d'acteurs exceptionnelles, à revoir absolument !",
   },
+  {
+    id: 4,
+    username: "manager",
+    filmId: 1,
+    comment: "Un chef-d'œuvre visuel, chaque scène est magnifique.",
+  },
+  {
+    id: 5,
+    username: "manager",
+    filmId: 2,
+    comment: "Un scénario bien pensé avec des rebondissements inattendus.",
+  },
+  {
+    id: 6,
+    username: "manager",
+    filmId: 3,
+    comment: "Une bande sonore incroyable qui amplifie l'émotion du film.",
+  },
 ];
 
 function readAllComments(filmId: number) {
-  const comments = parse(jsonDbPath, defaultComments);
+  const comments = parse(jsonDbPathComments, defaultComments);
   if (!filmId) {
     return comments;
   }
@@ -37,7 +56,19 @@ function readAllComments(filmId: number) {
 }
 
 function createOneComment(newComment: NewComment) : Comment {
-  const comments = parse(jsonDbPath, defaultComments);
+  const comments = parse(jsonDbPathComments, defaultComments);
+
+  const previousCommentIndex = comments.findIndex((comment) => comment.username === newComment.username && comment.filmId === newComment.filmId);
+  if (previousCommentIndex !== -1) {
+    throw 409;
+  }
+  
+
+  const films : Film[] = parse(jsonDbPathFilms,[]);
+  const foundFilmIndex = films.findIndex((film) => film.id === newComment.filmId);
+  if (foundFilmIndex === -1) {
+    throw 404;
+  }
 
   const nextId: number = comments.reduce((maxValue, comment2) => {
     if (comment2.id > maxValue) {
@@ -52,22 +83,18 @@ function createOneComment(newComment: NewComment) : Comment {
   };
 
   comments.push(createdComment);
-  serialize(jsonDbPath, comments);
+  serialize(jsonDbPathComments, comments);
   return createdComment;
 }
 
-function deleteOneComment(id: number,username:string) : Comment | undefined {
-  const comments = parse(jsonDbPath, defaultComments);
-  const foundCommentIndex = comments.findIndex((comment) => comment.id === id);
-  if (foundCommentIndex === -1) {
+function deleteOneComment(filmId: number,username:string) : Comment | undefined {
+  const comments = parse(jsonDbPathComments, defaultComments);
+  const foundFilmCommentIndex = comments.findIndex((comment) => comment.filmId === filmId && comment.username === username);
+  if (foundFilmCommentIndex === -1) {
     throw 404;
   }
-  console.log(foundCommentIndex);
-  if (comments[foundCommentIndex].username !== username) {
-    throw 403;
-  }
-  const deletedComment = comments.splice(foundCommentIndex,1);
-  serialize(jsonDbPath,comments);
+  const deletedComment = comments.splice(foundFilmCommentIndex,1);
+  serialize(jsonDbPathComments,comments);
   return deletedComment[0];
 }
 

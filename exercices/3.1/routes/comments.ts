@@ -37,13 +37,17 @@ router.post("/",authorize,(req,res) => {
         username : req.user.username,
         comment : body.comment
     } as NewComment;
+    try {
     const createdComment = createOneComment(newComment);
     return res.json(createdComment);
+    } catch (error) {
+        return res.sendStatus(Number(error));
+    }
 });
 
-router.delete("/:id",authorize,(req,res) => {
-    const commentId = Number(req.params.id);
-    if(isNaN(commentId) 
+router.delete("/films/:id",authorize,(req,res) => {
+    const filmId = Number(req.params.id);
+    if(isNaN(filmId) 
     || !("user" in req)
     || typeof req.user !== "object"
     || !req.user
@@ -55,7 +59,7 @@ router.delete("/:id",authorize,(req,res) => {
 }
 const username = req.user.username;
 try {
-    const deletedComment = deleteOneComment(commentId,username);
+    const deletedComment = deleteOneComment(filmId,username);
     return res.json(deletedComment);
 } catch (error) {
     return res.sendStatus(Number(error));
