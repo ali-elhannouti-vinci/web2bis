@@ -62,7 +62,7 @@ function addOneFilm(newFilm:NewFilm) :Film | undefined {
   }
 
   const nextId =
-  films.reduce((maxId, drink) => (drink.id > maxId ? drink.id : maxId), 0) +
+  films.reduce((maxId, film) => (film.id > maxId ? film.id : maxId),0) +
   1;
 
   const addedFilm:Film = {

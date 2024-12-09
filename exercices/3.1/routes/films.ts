@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { Film, NewFilm } from "../types";
+import { Film, FilmToUpdate, NewFilm } from "../types";
 import { addOneFilm, addOrUpdateIfExists, deleteOneFilm, readAllFilms, readOneFilmById, updateOneFilmById } from "../services/films";
 import { authorize } from "../utils/auths";
 
@@ -92,7 +92,7 @@ router.patch("/:id",authorize,(req,res) => {
 
   const id = Number(req.params.id);
 
-  const {title,director,duration,budget,description,imageUrl}:Partial<NewFilm> = body;
+  const {title,director,duration,budget,description,imageUrl}:FilmToUpdate = body;
 
   let foundFilm:Film|undefined = undefined;
   try {

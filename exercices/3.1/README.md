@@ -10,5 +10,5 @@
 | **`films/:id`** | PATCH | Oui | UPDATE ONE : Modifie une ressource de la collection |
 | **`films/:id`** | PUT | Oui | UPDATE OR CREATE ONE : Modifie une ressource de la collection si celle-ci existe, sinon crée une nouvelle ressource de la collection |
 | **`comments`** | GET | JWT | READ ALL FILTERED : Lire toutes les ressources de la collection |
-| **`comments`** | POST | JWT | CREATE ONE : Créer une ressource basée sur un body au format `{...}` |
-| **`comments/:username`** | DELETE | Oui | DELETE ONE : Supprime une ressource de la collection |
+| **`comments`** | POST | JWT | CREATE ONE : Créer une ressource basée sur un body au format `{id: number; userId: number; filmId: number; comment: string;}` |
+| **`comments/:id`** | DELETE | Oui | DELETE ONE : Supprime une ressource de la collection |

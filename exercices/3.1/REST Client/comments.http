@@ -1,0 +1,100 @@
+@baseUrl = http://localhost:3000
+
+### Login the default admin
+# @name admin
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username": "admin",
+    "password": "admin"
+}
+
+##### Define a variable for admin's token
+@adminToken = {{admin.response.body.token}}
+
+### Login the manager user
+# @name manager
+POST {{baseUrl}}/auths/login
+Content-Type: application/json
+
+{
+    "username": "manager",
+    "password": "manager"
+}
+
+##### Define a variable for manager's token
+@managerToken = {{manager.response.body.token}}
+
+### Read All Comments (Non-authenticated)
+GET {{baseUrl}}/comments
+
+### Read Comments for a Film (Non-authenticated)
+GET {{baseUrl}}/comments?filmId=1
+
+### Create a Comment (Non-authenticated)
+POST {{baseUrl}}/comments
+Content-Type: application/json
+
+{
+    "username": "John",
+    "filmId": 1,
+    "comment": "Attempt to create a comment without authentication"
+}
+
+### Delete a Comment (Non-authenticated)
+DELETE {{baseUrl}}/comments/1
+Content-Type: application/json
+
+### Read All Comments (Admin)
+GET {{baseUrl}}/comments
+Authorization: {{adminToken}}
+
+### Read Comments for a Film (Admin)
+GET {{baseUrl}}/comments?filmId=1
+Authorization: {{adminToken}}
+
+### Create a Comment (Admin)
+POST {{baseUrl}}/comments
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+{
+    "filmId": 1,
+    "comment": "Comment created by admin"
+}
+
+### Delete a Comment (Admin)
+DELETE {{baseUrl}}/comments/1
+Content-Type: application/json
+Authorization: {{adminToken}}
+
+### Read All Comments (Manager)
+GET {{baseUrl}}/comments
+Authorization: {{managerToken}}
+
+### Read Comments for a Film (Manager)
+GET {{baseUrl}}/comments?filmId=1
+Authorization: {{managerToken}}
+
+### Create a Comment (Manager)
+POST {{baseUrl}}/comments
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+{
+    "username": "Manager",
+    "filmId": 1,
+    "comment": "Comment created by manager"
+}
+
+### Delete a Comment (Manager)
+DELETE {{baseUrl}}/comments/2
+Content-Type: application/json
+Authorization: {{managerToken}}
+
+### Attempt Unauthorized Operations
+### Delete a Comment (Admin trying to delete Manager's comment)
+DELETE {{baseUrl}}/comments/3
+Content-Type: application/json
+Authorization: {{adminToken}}
