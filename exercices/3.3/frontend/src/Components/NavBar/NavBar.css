@@ -4,12 +4,20 @@ nav {
     top: 0;
     left: 0;
     width: 100%;
-    background-color: #333; /* Couleur d'arrière-plan du NavBar */
-    color: white; /* Couleur du texte */
     padding: 10px 20px; /* Ajuster le padding */
     z-index: 1000; /* Assurez-vous que le nav est au-dessus de tout autre contenu */
     display: flex;
   }
+
+.light-theme {
+    background-color: white;
+    color: black;
+  }
+
+.dark-theme {
+  background-color: black;
+  color: white;
+}
 
   
   /* Exemple de style responsive pour petites tailles d'écran */

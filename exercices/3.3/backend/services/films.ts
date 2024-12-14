@@ -1,4 +1,4 @@
-import { Film,NewFilm } from "../types";
+import {Film,NewFilm} from '../types';
 import path from "node:path";
 import { parse, serialize } from "../utils/json";
 const jsonDbPath = path.join(__dirname, "/../data/films.json");

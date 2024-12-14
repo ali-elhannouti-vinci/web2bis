@@ -17,6 +17,8 @@ interface MovieListContext {
     setMovies: (movies:Movie[]) => void,
     addMovie : (newMovie:NewMovie) => void
     deleteMovie : (id:number) => void
+    theme:string,
+    switchTheme: () => void;
 }
 
 export type {Movie,NewMovie,MovieListContext};

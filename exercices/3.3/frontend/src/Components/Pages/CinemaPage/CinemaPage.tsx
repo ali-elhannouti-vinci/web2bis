@@ -1,7 +1,6 @@
 import Cinema from "../../Cinema/Cinema";
 import PageTitle from '../../PageTitle/PageTitle';
 import CinemaHeader from '../../CinemaHeader/CinemaHeader';
-import CinemaFooter from '../../CinemaFooter/CinemaFooter';
 
 const CinemaPage = () => {
   const pageTitle = "Informations sur les films dans les cinémas";
@@ -72,8 +71,6 @@ const CinemaPage = () => {
       <Cinema name={cinema1Name} movies={moviesCinema1} />
 
       <Cinema name={cinema2Name} movies={moviesCinema2} />
-
-      <CinemaFooter />
     </div>
   );
 };

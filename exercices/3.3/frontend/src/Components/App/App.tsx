@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
 import { Movie, MovieListContext, NewMovie } from "../../types";
 import { useEffect, useState } from "react";
+import Footer from "../Footer/Footer";
 
 const defaultMovies: Movie[] = [
   {
@@ -73,7 +74,10 @@ const defaultMovies: Movie[] = [
 ];
 
 const App = () => {
+  const themeKey = "theme";
+
   const [movies, setMovies] = useState(defaultMovies);
+  const [theme,setTheme] = useState(localStorage.getItem(themeKey) ?? "light")
 
   async function getAllMovies() {
     try {
@@ -90,6 +94,8 @@ const App = () => {
       throw error;
     }
   }
+
+  
 
   async function addMovie(newMovie : NewMovie) {
     try {
@@ -131,32 +137,54 @@ const App = () => {
     }
 }
 
+  
+
+  function switchTheme() {
+    const localStorageTheme = localStorage.getItem(themeKey);
+    if (localStorageTheme == "dark"){
+      localStorage.setItem(themeKey,"light")
+      setTheme("light")
+    }else if (localStorageTheme == "light") {
+      localStorage.setItem(themeKey,"dark")
+      setTheme("dark")
+    }
+  }
+
   const fullMovieListContext: MovieListContext = {
     movies,
     setMovies,
     addMovie,
-    deleteMovie
+    deleteMovie,
+    theme,
+    switchTheme
+  };
+
+  const fetchMovies = async () => {
+    try {
+    const fetchedMovies = await getAllMovies();
+    setMovies(fetchedMovies);
+    console.log("fetched movies : "+fetchedMovies);
+    
+    } catch (error) {
+      console.error("fetchMovies::error: "+error)
+    }
   };
 
 useEffect(() => {
+  const localTheme = localStorage.getItem(themeKey);
+  if (!localTheme) {
+    localStorage.setItem(themeKey,"light");
+  }
   fetchMovies();
 },[])
 
-const fetchMovies = async () => {
-  try {
-  const fetchedMovies = await getAllMovies();
-  setMovies(fetchedMovies);
-  console.log("fetched movies : "+fetchedMovies);
-  
-  } catch (error) {
-    console.error("fetchMovies::error: "+error)
-  }
-};
+
 
   return (
     <div>
-      <NavBar />
+      <NavBar theme={theme} switchTheme={switchTheme}/>
       <Outlet context={fullMovieListContext} />
+      <Footer theme={theme}/>
     </div>
   );
 };
