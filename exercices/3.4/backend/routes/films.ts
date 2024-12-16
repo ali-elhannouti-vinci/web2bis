@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { Film, NewFilm } from "../types";
+import { Film, FilmToUpdate, NewFilm } from "../types";
 import { addOneFilm, addOrUpdateIfExists, deleteOneFilm, readAllFilms, readOneFilmById, updateOneFilmById } from "../services/films";
+import { authorize } from "../utils/auths";
 
 const router = Router();
 
@@ -23,9 +24,8 @@ router.get("/:id",(req,res) => {
   return res.json(foundFilm);
 });
 
-router.post("/",(req,res)  => {
+router.post("/",authorize,(req,res)  => {
   const body : unknown = req.body;
-  
   if (
     !body ||
     typeof body !== "object" ||
@@ -56,10 +56,10 @@ router.post("/",(req,res)  => {
       return res.json(409);
     }
 
-  return res.json(addOneFilm);
+  return res.json(addedFilm);
 });
 
-router.delete("/:id",(req,res) => {
+router.delete("/:id",authorize,(req,res) => {
   const id = Number(req.params.id);
   const deletedFilm = deleteOneFilm(id);
   if (!deletedFilm) {
@@ -68,7 +68,7 @@ router.delete("/:id",(req,res) => {
   return res.json(deletedFilm);
 });
 
-router.patch("/:id",(req,res) => {
+router.patch("/:id",authorize,(req,res) => {
   const body:unknown = req.body;  
 
   if (
@@ -92,7 +92,7 @@ router.patch("/:id",(req,res) => {
 
   const id = Number(req.params.id);
 
-  const {title,director,duration,budget,description,imageUrl}:Partial<NewFilm> = body;
+  const {title,director,duration,budget,description,imageUrl}:FilmToUpdate = body;
 
   let foundFilm:Film|undefined = undefined;
   try {
@@ -106,7 +106,7 @@ router.patch("/:id",(req,res) => {
 });
 
 // Update a film only if all properties are given or create it if it does not exist and the id is not existent
-router.put("/:id", (req, res) => {
+router.put("/:id",authorize, (req, res) => {
   const body: unknown = req.body;
 
   if (

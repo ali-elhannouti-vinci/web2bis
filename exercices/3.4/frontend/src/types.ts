@@ -19,6 +19,22 @@ interface MovieListContext {
     deleteMovie : (id:number) => void
     theme:string,
     switchTheme: () => void;
+    registerUser: (newUser: User) => Promise<void>;
+    loginUser: (user: User) => Promise<void>;
+    authenticatedUser : MaybeAuthenticatedUser
 }
 
-export type {Movie,NewMovie,MovieListContext};
+interface User {
+    username: string;
+    password: string;
+  }  
+
+interface AuthenticatedUser {
+    username: string;
+    token: string;
+  }
+  
+  type MaybeAuthenticatedUser = AuthenticatedUser | undefined;
+
+export type {Movie,NewMovie,MovieListContext,User,AuthenticatedUser,
+    MaybeAuthenticatedUser};

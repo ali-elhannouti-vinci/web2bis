@@ -1,8 +1,9 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../NavBar/NavBar";
-import { Movie, MovieListContext, NewMovie } from "../../types";
+import { AuthenticatedUser, MaybeAuthenticatedUser, Movie, MovieListContext, NewMovie, User } from "../../types";
 import { useEffect, useState } from "react";
 import Footer from "../Footer/Footer";
+import { clearAuthenticatedUser, getAuthenticatedUser, storeAuthenticatedUser } from "../../utils/session";
 
 const defaultMovies: Movie[] = [
   {
@@ -78,6 +79,8 @@ const App = () => {
 
   const [movies, setMovies] = useState(defaultMovies);
   const [theme,setTheme] = useState(localStorage.getItem(themeKey) ?? "light")
+  const [authenticatedUser, setAuthenticatedUser] =
+    useState<MaybeAuthenticatedUser>(undefined);
 
   async function getAllMovies() {
     try {
@@ -95,7 +98,16 @@ const App = () => {
     }
   }
 
-  
+  const fetchMovies = async () => {
+    try {
+    const fetchedMovies = await getAllMovies();
+    setMovies(fetchedMovies);
+    console.log("fetched movies : "+fetchedMovies);
+    
+    } catch (error) {
+      console.error("fetchMovies::error: "+error)
+    }
+  };
 
   async function addMovie(newMovie : NewMovie) {
     try {
@@ -150,31 +162,92 @@ const App = () => {
     }
   }
 
+  const registerUser = async (newUser : User) => {
+    try {
+      const options = {
+        method: "POST",
+        body: JSON.stringify(newUser),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const response = await fetch("/api/auths/register", options);
+
+      if (!response.ok)
+        throw new Error(
+          `fetch error : ${response.status} : ${response.statusText}`
+        );
+
+      const createdUser: AuthenticatedUser = await response.json();
+
+      setAuthenticatedUser(createdUser);
+      storeAuthenticatedUser(createdUser);
+      console.log("createdUser: ", createdUser);
+    } catch (err) {
+      console.error("registerUser::error: ", err);
+      throw err;
+    }
+  }
+
+  const loginUser = async (user: User) => {
+    try {
+      const options = {
+        method: "POST",
+        body: JSON.stringify(user),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const response = await fetch("/api/auths/login", options);
+
+      if (!response.ok)
+        throw new Error(
+          `fetch error : ${response.status} : ${response.statusText}`
+        );
+
+      const authenticatedUser: AuthenticatedUser = await response.json();
+      console.log("authenticatedUser: ", authenticatedUser);
+
+      setAuthenticatedUser(authenticatedUser);
+      storeAuthenticatedUser(authenticatedUser);
+    } catch (err) {
+      console.error("loginUser::error: ", err);
+      throw err;
+    }
+  };
+
+  const clearUser = () => {
+    clearAuthenticatedUser();
+    setAuthenticatedUser(undefined);
+  }
+
   const fullMovieListContext: MovieListContext = {
     movies,
     setMovies,
     addMovie,
     deleteMovie,
     theme,
-    switchTheme
+    switchTheme,
+    registerUser,
+    loginUser,
+    authenticatedUser
   };
 
-  const fetchMovies = async () => {
-    try {
-    const fetchedMovies = await getAllMovies();
-    setMovies(fetchedMovies);
-    console.log("fetched movies : "+fetchedMovies);
-    
-    } catch (error) {
-      console.error("fetchMovies::error: "+error)
-    }
-  };
+ 
+
+  
 
 useEffect(() => {
   const localTheme = localStorage.getItem(themeKey);
   if (!localTheme) {
     localStorage.setItem(themeKey,"light");
   }
+  const authenticatedUser = getAuthenticatedUser();
+    if (authenticatedUser) {
+      setAuthenticatedUser(authenticatedUser);
+    }
   fetchMovies();
 },[])
 
@@ -182,7 +255,7 @@ useEffect(() => {
 
   return (
     <div>
-      <NavBar theme={theme} switchTheme={switchTheme}/>
+      <NavBar theme={theme} switchTheme={switchTheme} authenticatedUser={authenticatedUser} clearUser={clearUser}/>
       <Outlet context={fullMovieListContext} />
       <Footer theme={theme}/>
     </div>

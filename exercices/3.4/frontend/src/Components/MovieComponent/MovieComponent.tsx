@@ -4,7 +4,8 @@ import { MovieListContext } from "../../types";
 function MovieComponent({id ,title, director, duration, imageUrl, description, budget}: MovieProps) {
     
     const {
-        deleteMovie
+        deleteMovie,
+        authenticatedUser
       } : MovieListContext =  useOutletContext();
 
     return (
@@ -15,7 +16,7 @@ function MovieComponent({id ,title, director, duration, imageUrl, description, b
             {imageUrl && <li><img src={imageUrl}></img></li>}
             {description && <li><strong>Description:</strong> {description}</li>}
             {budget && <li><strong>Budget:</strong> ${budget.toLocaleString()}</li>}
-            <button onClick={() => deleteMovie(id)}>Supprimer de la liste</button>
+            {authenticatedUser ? <button onClick={() => deleteMovie(id)}>Supprimer de la liste</button> : ""}
         </ul>
     );
 }

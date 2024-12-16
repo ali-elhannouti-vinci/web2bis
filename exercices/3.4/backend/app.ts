@@ -1,25 +1,39 @@
-import express from "express";
+import express, { ErrorRequestHandler } from "express";
+import cors from "cors";
 
+import usersRouter from "./routes/users";
+import authsRouter from "./routes/auths";
 import filmsRouter from "./routes/films";
+import commentsRouter from './routes/comments';
 
 const app = express();
+
+const corsOptions = {
+  origin: [/^http:\/\/localhost/, "http://amazing.you.com"],
+};
+
+app.use(cors(corsOptions));
+
+app.use((_req, _res, next) => {
+  console.log(
+    "Time:",
+    new Date().toLocaleString("fr-FR", { timeZone: "Europe/Brussels" })
+  );
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-let getCounter:number = 0;
-app.use((_req,_res,next)=> {
-    console.log(`Request received: ${_req.method} ${_req.url}`);
-    if (_req.method === "GET") {
-        getCounter++;
-        console.log(
-            `GET counter : ${getCounter}`
-        );
-    }
-    next();
-});
-
+app.use("/users", usersRouter);
+app.use("/auths", authsRouter);
 app.use("/films",filmsRouter);
+app.use("/comments",commentsRouter);
 
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
+  console.error(err.stack);
+  return res.status(500).send("Something broke!");
+};
 
+app.use(errorHandler);
 export default app;
