@@ -112,12 +112,17 @@ const App = () => {
   async function addMovie(newMovie : NewMovie) {
     try {
       console.log("New movie : "+ newMovie);
+
+      if(!authenticatedUser)  {
+        throw new Error("You must be authenticated to add a movie");
+      }
       
       const options = {
         method:"POST",
         body: JSON.stringify(newMovie),
         headers:{
-          "Content-type" : "application/json"
+          "Content-type" : "application/json",
+          Authorization : authenticatedUser.token
         }
       }
 
@@ -134,9 +139,15 @@ const App = () => {
 
   async function deleteMovie(id:number) {
     try {
+      if(!authenticatedUser)  {
+        throw new Error("You must be authenticated to delete a movie");
+      }
         const options = {
-            method:"DELETE"
-        }
+            method:"DELETE",
+            headers:{
+              Authorization: authenticatedUser.token
+            }
+          }
         const response = await fetch(`/api/films/${id}`,options)
 
         if (!response.ok) {
@@ -148,8 +159,6 @@ const App = () => {
         throw error;
     }
 }
-
-  
 
   function switchTheme() {
     const localStorageTheme = localStorage.getItem(themeKey);
